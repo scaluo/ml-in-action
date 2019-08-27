@@ -33,7 +33,7 @@ def file2matrix(filename):
         line = line.strip()
         listFromLine = line.split('\t')
         returnMat[index,:] = listFromLine[0:3]
-        classLabelVector.append(int(listFromLine[-1]))
+        classLabelVector.append(listFromLine[-1])
         index += 1
     return returnMat,classLabelVector
 
@@ -48,10 +48,24 @@ def autoNorm(dataSet):
     normDataSet = normDataSet/np.tile(ranges,(m,1))
     return normDataSet,ranges,minVals
 
+#测试错误率
+def datingClassTest():
+    hoRatio = 0.10
+    datingDataMat,datingLabels = file2matrix('datingTestSet.txt')
+    normMat,ranges,minVals = autoNorm(datingDataMat)
+    m = normMat.shape[0]
+    numTestVecs = int(m*hoRatio)
+    errorCount = 0.0
+    for i in range(numTestVecs):
+        classifierResult = classify0(normMat[i,:],normMat[numTestVecs:m,:],datingLabels[numTestVecs:m],3)
+        print("The classifier came back with :%s,the real answer is:%s"%(classifierResult,datingLabels[i]))
+        if (classifierResult!=datingLabels[i]):
+            errorCount += 1.0
+    print("the total error rate is:%f" % (errorCount/float(numTestVecs)))
 
 if __name__== '__main__':
     # datasets,labels = createDataSet()
     # print(classify0([1.0,1.2],datasets,labels,3)) 
-    transMat,transLabs = file2matrix('datingTestSet2.txt')
-    print(transMat)
+    #transMat,transLabs = file2matrix('datingTestSet2.txt')
+    datingClassTest()
 
