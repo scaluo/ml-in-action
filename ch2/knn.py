@@ -1,5 +1,6 @@
 import numpy as np
 import operator
+from os import listdir
 
 def createDataSet():
     group = np.array([[1.0,1.1],[1.0,1.0],[0,0],[0,0.1]])
@@ -63,9 +64,56 @@ def datingClassTest():
             errorCount += 1.0
     print("the total error rate is:%f" % (errorCount/float(numTestVecs)))
 
+#通过输入来判断用户类型
+def classifyPerson():
+    resultList = ["not at all","in small doses","in large doses"]
+    percentTats = float(input("percentage of time spent playing video games?"))
+    ffMiles = float(input("frequent flier miles earned per year?"))
+    iceCream = float(input("liters of ice cream consumed per year?"))
+    datingDataMat,datingLabels = file2matrix('datingTestSet2.txt')
+    normMat,ranges,minVals = autoNorm(datingDataMat)
+    inArr = np.array([ffMiles,percentTats,iceCream])
+    classifyResult = classify0((inArr-minVals)/ranges,normMat,datingLabels,3)
+    print("Your will probably like this person:",resultList[int(classifyResult)-1])
+
+def img2vector(filename):
+    returnVect = np.zeros((1,1024))
+    fr = open(filename)
+    for i in range(32):
+        lineStr = fr.readline()
+        for j in range(32):
+            returnVect[0,32*i+j] = int(lineStr[j])
+    return returnVect
+
+#手写测试
+def handwritingClassTest():
+    hwLabels = []
+    trainingFileList = listdir('trainingDigits')
+    m = len(trainingFileList)
+    trainingMat = np.zeros((m,1024))
+    for i in range(m):
+        fileNameStr = trainingFileList[i]
+        fileStr = fileNameStr.split('.')[0]
+        classNumStr = fileStr.split('_')[0]
+        hwLabels.append(classNumStr)
+        trainingMat[i,:] = img2vector('trainingDigits/%s'%fileNameStr)
+    testFileList = listdir('testDigits')
+    errorCount = 0.0
+    mTest = len(testFileList)
+    for i in range(mTest):
+        fileNameStr = testFileList[i]
+        fileStr = fileNameStr.split('.')[0]
+        classNumStr = fileStr.split('_')[0]
+        classifyResult = classify0(img2vector('testDigits/%s'%fileNameStr),trainingMat,hwLabels,3)
+        print("The classifier came back with :%s,the real answer is:%s"%(classifyResult,classNumStr))
+        if (classNumStr!=classifyResult):
+            errorCount+=1
+    print("the total error rate is:%f" % (errorCount/float(mTest)))    
+
 if __name__== '__main__':
     # datasets,labels = createDataSet()
     # print(classify0([1.0,1.2],datasets,labels,3)) 
     #transMat,transLabs = file2matrix('datingTestSet2.txt')
-    datingClassTest()
-
+    #datingClassTest()
+    #classifyPerson()
+    handwritingClassTest()

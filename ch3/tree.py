@@ -1,6 +1,7 @@
 from math import log
 import operator
 
+#计算香农熵
 def calcShannonEnt(dataSet):
     numEntries = len(dataSet)
     labelCounts = {}
@@ -24,6 +25,7 @@ def createDataSet():
     labels = ['no surfacing','flipper']
     return dataSet,labels
 
+#划分数据集，axis指定特征列，value指定特征值
 def splitDataSet(dataSet,axis,value):
     retDataSet = []
     for featVec in dataSet:
@@ -33,6 +35,7 @@ def splitDataSet(dataSet,axis,value):
             retDataSet.append(rec)
     return retDataSet
 
+#选择最佳特征
 def chooseBestFeatureToSplit(dataSet):
     numFeatures = len(dataSet[0])-1      #特征数
     baseEntropy = calcShannonEnt(dataSet)
