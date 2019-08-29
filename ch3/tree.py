@@ -1,6 +1,16 @@
 from math import log
 import operator
 
+#创建数据集和特征说明，labels表示特征说明，按照列次序
+def createDataSet():
+    dataSet = [[1,1,'yes'],
+               [1,1,'yes'],
+               [1,0,'no'],
+               [0,1,'no'],
+               [0,1,'no']]
+    labels = ['no surfacing','flipper']
+    return dataSet,labels
+
 #计算香农熵
 def calcShannonEnt(dataSet):
     numEntries = len(dataSet)
@@ -16,14 +26,6 @@ def calcShannonEnt(dataSet):
         shannonEnt -= prob*log(prob,2)
     return shannonEnt
 
-def createDataSet():
-    dataSet = [[1,1,'yes'],
-               [1,1,'yes'],
-               [1,0,'no'],
-               [0,1,'no'],
-               [0,1,'no']]
-    labels = ['no surfacing','flipper']
-    return dataSet,labels
 
 #划分数据集，axis指定特征列，value指定特征值
 def splitDataSet(dataSet,axis,value):
@@ -55,6 +57,7 @@ def chooseBestFeatureToSplit(dataSet):
             bestFeature=i
     return bestFeature
 
+#特征值只剩一个时，判断是哪个分类，按照分类数量多少判断
 def majorityCnt(classList):
     classCount = {}
     for vote in classList:
@@ -64,6 +67,7 @@ def majorityCnt(classList):
         sortedClassCount = sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
         return sortedClassCount[0][0]
 
+#创建决策树
 def createTree(dataSet,labels):
     classList = [data[-1] for data in dataSet]
     if classList.count(classList[0]) == len(classList):
@@ -103,3 +107,10 @@ def classify(inputTree,featLabels,testVec):
     #         else:
     #             classLabel = secondDict[key]
     # return classLabel
+
+
+    
+if __name__ == "__main__":
+    datasets,labels = createDataSet()
+    mytree = createTree(datasets,labels)
+    print(mytree)
