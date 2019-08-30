@@ -1,5 +1,5 @@
 # 《机器学习实战》练习代码
-
+书中代码是python2+的，练习代码都用python3+实现  
 ## ch2：KNN算法  
 计算特征数据间的距离公式  
 ![image](http://latex.codecogs.com/gif.latex?d=\sqrt{{(x-x1)}^2+{(x-x2)}^2...{(x-xi)}^2})
