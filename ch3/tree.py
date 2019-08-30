@@ -1,5 +1,6 @@
 from math import log
 import operator
+import treePlotter
 
 #创建数据集和特征说明，labels表示特征说明，按照列次序
 def createDataSet():
@@ -140,9 +141,30 @@ def classify(inputTree,featLabels,testVec):
     #             classLabel = secondDict[key]
     # return classLabel
 
+#存树
+def storeTree(inputTree,filename):
+    import pickle
+    fw = open(filename,'wb')
+    pickle.dump(inputTree,fw)
+    fw.close()
 
+#取树
+def grabTree(filename):
+    import pickle
+    fr = open(filename,'rb')
+    return pickle.load(fr)
     
 if __name__ == "__main__":
-    datasets,labels = createDataSet()
+    # datasets,labels = createDataSet()
+    # mytree = createTree(datasets,labels)
+    # storeTree(mytree,"mytree.txt")
+    # mytree = grabTree("mytree.txt")
+    # print(classify(mytree,labels,[1,1]))
+    # print(classify(mytree,labels,[0,1]))
+    
+    # 用http://archive.ics.uci.edu/ml/datasets/Car+Evaluation 这个网站上的汽车数据来做测试
+    fr = open("car.data")
+    datasets = [line.strip().split(',') for line in fr.readlines()]
+    labels = ['buying','maint','doors','persons','lug_boot','safety']
     mytree = createTree(datasets,labels)
-    print(mytree)
+    treePlotter.createPlot(mytree)
