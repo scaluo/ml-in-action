@@ -27,6 +27,7 @@ def createPlot(inTree):
     plotTree.totalD = float(getTreeDepth(inTree))
     #每个叶子节点在X轴的偏移量
     plotTree.xOff = -0.5/plotTree.totalW; 
+    #每个节点Y轴偏移
     plotTree.yOff = 1.0;
     plotTree(inTree, (0.5,1.0), '')
     plt.show()
