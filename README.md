@@ -13,7 +13,7 @@
 
 ## ch4:朴素贝叶斯  
 条件概率公式  
-![image](http://latex.codecogs.com/gif.latex?p(c|x) = \frac{p(x|c)p(c)}{p(x)})  
+![image](http://latex.codecogs.com/gif.latex?p(c|x)=\frac{p(x|c)p(c)}{p(x)})  
 如果p(c1|x,y)>p(c2|x,y) 那么分类就是c1，反之亦然
 
 
