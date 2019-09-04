@@ -40,6 +40,17 @@ def gradAscent(dataMatIn, classLabels):
     #将矩阵转换为数组，返回权重数组
     return weights.getA()
 
+#随机梯度上升，一次一个样本点
+def stocGradAscent0(dataMatIn,classLabels):
+    m,n = np.shape(dataMatIn)
+    alpha = 0.01
+    weights = np.ones(n)
+    for i in range(m):
+        h = sigmoid(sum(dataMatIn[i]*weights))
+        error = classLabels[i]-h
+        weights = weights+alpha*error*dataMatIn[i]
+    return weights
+
 def plotBestFit(wei):
     dataMat,labelMat = loadDataSet()
     dataArr = np.array(dataMat)
@@ -48,6 +59,7 @@ def plotBestFit(wei):
     ycode1=[]
     xcode2=[]
     ycode2=[]
+    #两种不同分类的数据分别放，画不同颜色的散点
     for i in range(n):
         if int(labelMat[i]) == 1:
             xcode1.append(dataArr[i,1])
@@ -63,8 +75,6 @@ def plotBestFit(wei):
     x = np.arange(-3.0,3.0,0.1)
     # w0x0+w1x1+w2x2=0,x0=1  ,   x2=(-w0-w1x1)/w2
     y = (-wei[0]-wei[1]*x)/wei[2]
-    print(wei)
-    print(y)
     ax.plot(x,y)
     plt.xlabel('X1')
     plt.ylabel('X2')
@@ -72,5 +82,14 @@ def plotBestFit(wei):
 
 if __name__ == '__main__':
     dataMat,labels = loadDataSet()
-    wei = gradAscent(dataMat,labels)
+    #wei = gradAscent(dataMat,labels)
+    wei = stocGradAscent0(np.array(dataMat),labels)
+    print(wei)
     plotBestFit(wei)
+    #test draw line
+    # fig = plt.figure()
+    # ax = fig.add_subplot(1,1,1)
+    # x=np.array([1,2,3,4,5,6,7,8])
+    # y=np.array([48083,41786,36194,35302,33164,39930,47436,43738])
+    # ax.plot(x,y)
+    # plt.show()
