@@ -17,7 +17,7 @@
 p(x|c)=sum(xi|c)  
 如果p(c1|x,y)>p(c2|x,y) 那么分类就是c1，反之亦然  
 
-##ch5:Logistic回归  
+## ch5:Logistic回归  
 阶跃函数Sigmod  
 ![image](http://latex.codecogs.com/gif.latex?\delta(z)=\frac{1}{1+e^{-z}})  
 
