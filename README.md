@@ -20,6 +20,9 @@ p(x|c)=sum(xi|c)
 ## ch5:Logistic回归  
 阶跃函数Sigmod  
 ![image](http://latex.codecogs.com/gif.latex?\delta(z)=\frac{1}{1+e^{-z}})  
+其中  
+![image](http://latex.codecogs.com/gif.latex?z=w_{0}x_{0}+w_{1}x_{1}+...+w_{n}x_{n})  
+
 
 
 
