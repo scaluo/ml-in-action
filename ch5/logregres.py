@@ -59,8 +59,12 @@ def plotBestFit(wei):
     ax = fig.add_subplot(1,1,1)
     ax.scatter(xcode1,ycode1,s=30,c='red',marker='s')
     ax.scatter(xcode2,ycode2,s=30,c='green')
+    #任意生成X轴上的点，-3到3，步长0.1
     x = np.arange(-3.0,3.0,0.1)
+    # w0x0+w1x1+w2x2=0,x0=1  ,   x2=(-w0-w1x1)/w2
     y = (-wei[0]-wei[1]*x)/wei[2]
+    print(wei)
+    print(y)
     ax.plot(x,y)
     plt.xlabel('X1')
     plt.ylabel('X2')
