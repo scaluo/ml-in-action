@@ -51,6 +51,21 @@ def stocGradAscent0(dataMatIn,classLabels):
         weights = weights+alpha*error*dataMatIn[i]
     return weights
 
+#改进版梯度上升
+def stocGradAscent1(dataMatIn,classLabels,numIter=500):
+    m, n = np.shape(dataMatIn)
+    weights = np.ones(n)
+    for j in range(numIter):
+        dataIndex = list(range(m))
+        for i in range(m):
+            alpha = 4/(1.0+j+i)+0.01
+            randIndex = int(np.random.uniform(0,len(dataIndex)))
+            h = sigmoid(dataMatIn[randIndex] * weights)
+            error = classLabels[randIndex] - h
+            weights = weights + alpha * error * dataMatIn[randIndex]
+            del(dataIndex[randIndex])
+    return weights
+
 def plotBestFit(wei):
     dataMat,labelMat = loadDataSet()
     dataArr = np.array(dataMat)
@@ -80,12 +95,50 @@ def plotBestFit(wei):
     plt.ylabel('X2')
     plt.show()
 
+#分类
+def classifyVector(inX,weights):
+    prob = sigmoid(sum(inX*weights))
+    print(prob)
+    if prob>0.5:
+        return 1.0
+    else:
+        return 0.0
+
+#疝马数据测试
+def colicTest():
+    frTrain = open('horseColicTraining.txt')
+    frTest = open('horseColicTest.txt')
+    trainingSet = []
+    trainingLabels = []
+    for line in frTrain.readlines():
+        currLine = line.strip().split('\t')
+        lineArr = []
+        for i in range(21):
+            lineArr.append(float(currLine[i]))
+        trainingSet.append(lineArr)
+        trainingLabels.append(float(currLine[21]))
+    trainingWeights = stocGradAscent1(np.array(trainingSet),trainingLabels,500)
+    errorCount = 0
+    numTestVec = 0.0
+    for line in frTest.readlines():
+        numTestVec += 1.0
+        currLine = line.strip().split('\t')
+        lineArr = []
+        for i in range(21):
+            lineArr.append(float(currLine[i]))
+        if int(classifyVector(np.array(lineArr),trainingWeights))!=int(currLine[21]):
+            errorCount +=1
+    errorRate = (float(errorCount)/numTestVec)
+    print("the error rate of test is :%f"%errorRate)
+    return errorRate
+
+
 if __name__ == '__main__':
-    dataMat,labels = loadDataSet()
+    #dataMat,labels = loadDataSet()
     #wei = gradAscent(dataMat,labels)
-    wei = stocGradAscent0(np.array(dataMat),labels)
-    print(wei)
-    plotBestFit(wei)
+    #wei = stocGradAscent0(np.array(dataMat),labels)
+    #print(wei)
+    #plotBestFit(wei)
     #test draw line
     # fig = plt.figure()
     # ax = fig.add_subplot(1,1,1)
@@ -93,3 +146,4 @@ if __name__ == '__main__':
     # y=np.array([48083,41786,36194,35302,33164,39930,47436,43738])
     # ax.plot(x,y)
     # plt.show()
+    colicTest()
